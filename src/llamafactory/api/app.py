@@ -92,7 +92,11 @@ def create_app(chat_model: "ChatModel") -> "FastAPI":
     async def list_models():
         model_card = ModelCard(id=os.getenv("API_MODEL_NAME", "gpt-3.5-turbo"))
         return ModelList(data=[model_card])
-
+    
+    @app.get("/v1/chat/ping")
+    async def health_check():
+        return {"response": "pong"}
+    
     @app.post(
         "/v1/chat/completions",
         response_model=ChatCompletionResponse,
